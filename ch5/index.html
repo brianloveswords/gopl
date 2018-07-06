@@ -116,11 +116,19 @@ func outline(stack []string, n *html.Node) {
             </blockquote>
             <aside>
                 This is that subtle semantic of slices being a reference
-                type that is passed by value.
-                <a href="https://blog.golang.org/slices">This blog post on slices</a> describes
-                how slices work internally and is really illuminating. Here are two quotes from that article that
-                helped clear things up for me:
+                type that is passed by value. <a href="https://blog.golang.org/slices">This blog post on
+                slices</a> describes how slices work internally and is
+                really illuminating. The <a href="https://golang.org/pkg/reflect/#SliceHeader"><code>SliceHeader</code>
+                type from the <code>reflect</code> package</a> and two
+                quotes from that article that helped clear things up for
+                me:
             </aside>
+
+            <pre spellcheck="false" contenteditable><code class="language-go">type SliceHeader struct {
+        Data uintptr
+        Len  int
+        Cap  int
+}</code></pre>
 
             <blockquote>
                 Even though the slice header is passed by value, the
