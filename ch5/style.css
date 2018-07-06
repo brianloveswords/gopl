@@ -45,6 +45,10 @@ pre *::-moz-selection {
     background: black;
 }
 
+pre *::selection {
+    background: black;
+}
+
 img {
     width: 90%;
     margin: 1em auto;
