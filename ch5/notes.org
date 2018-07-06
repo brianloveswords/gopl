@@ -1,0 +1,73 @@
+#+TITLE: Chapter 5: Functions
+
+* 5.1 Function Declarations
+
+- “Like parameters, results may be named. In that case each name declares a local variable initialized to the zero value for its type”
+  - Does anyone use this in practice?
+
+- “Arguments are passed by value, so the function receives a copy of each argument; modifications to the copy do not affect the caller. However, if the argument contains some kind of reference, like a pointer, slice, map, function, or channel, then the caller may be affected by any modifications the function makes to variables indirectly referenced to by the argument”
+  - We've had a few discussions about reference types, so I wanted to call out this paragraph.
+
+* 5.2 Recursion
+
+- see ~findlinks1~ and ~outline~
+
+- “The golang.org/x/... repositories hold packages designed and maintained by the Go team for applications such as networking, internationalized text processing, mobile platforms, image manipulation, cryptography, and developer tools. These packages are not in the standard library because they're still under development or because they're rarely needed by the majority of Go programmers”
+  - Probably some good stuff in there.
+
+- “Note one subtlety: although outline "pushes" an element on stack, there is no corresponding pop. When outline calls itself recursively, the callee receives a copy of stack. Although the callee may append elements to this slice, modifying its underlying array and perhaps even allocating a new array, it doesn't modify the initial elements that are visible to the caller, so when the function returns, the caller's stack is as it was before the call”
+  - This is the thing Leigh and I were debating the semantics of last time we met.
+* 5.3 Multiple Return Values
+
+- see ~findlinks2~
+
+- “We must ensure that resp.Body is closed so that network resources are properly   released even in case of error. Go's garbage collector recycles unused memory, but do not assume it will release unused operating system resources like open files and network connections. They should be closed explicitly.”
+
+* 5.4 Errors
+
+- "Go's approach [to error handling] set it apart from many other languages in which failures are reported using exceptions, not ordinary values. Although Go does have an exception mechanism of sorts, as we will see in Section 5.9, it is used only for reporting truly unexpected errors that indicate a bug, not the routine errors that a robust program should be built to expect"
+
+** 5.4.1 Error-Handing Strategies
+
+- see ~wait~
+
+- Error Handling Strategies
+  1. propagate the error
+  2. retry the failed operation
+  3. print the error and stop program gracefully
+     - generally reserved for the main package, library functions should usually propagate errors
+  4. log the error and continue
+
+
+- “In general, the call f(x) is responsible for reporting the attempted operation f and the argument value x as they relate to the context of the error. The caller is responsible for adding further information that it has but the call f(x) does not, such as the URL in the call to html.Parse above"
+
+  doc, err := html.Parse(resp.Body)
+  resp.Body.Close()
+  if err != nil {
+      return nil, fmt.Errorf("parsing %s as HTML: %v", url, err)
+  }
+
+- “Error handling in Go has a particular rhythm. After checking an error, failure is usually dealt with before success. If failure causes the function to return, the logic for success is not indented within an else block but follows at the outer level. Functions tend to exhibit a common structure, with a series of initial checks to reject errors, followed by the substance of the function at the end, minimally indented”
+
+
+** 5.4.2 End of File (EOF)
+
+“Usually the variety of errors that a function may return is interesting to the end user by not to the intervening program logic. On occasion, however, a program must take different actions depending on the kind of error that has occurred.”
+- I feel like this is an understatement, or maybe it's the type of programs that I write, but I feel like *most* of the time the kind of error that occurred is relevant to intervening program logic?
+
+* 5.5 Function Values
+
+- see ~outline2~
+
+- “Functions are first-class values in Go”
+
+
+
+* 5.6 Anonymous Functions
+** 5.6.1 Caveat: Capturing Iteration Variables
+
+* 5.7 Variadic Functions
+* 5.8 Deferred Function Calls
+* 5.9 Panic
+* 5.10 Recover
+*
