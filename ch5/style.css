@@ -98,7 +98,8 @@ hr {
 }
 
 a {
-    color: green;
+    color: #06f;
+    text-decoration: none;
 }
 
 a.curse {
